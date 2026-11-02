@@ -1,1 +1,40 @@
-<p>login works!</p>
+<div class="login-card">
+    <h2>Login</h2>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="Field">
+        <div><label for="email">Email</label>
+    <input id="email" type="email" formControlName="email">
+ @if (loginForm.controls.email.hasError('required')&&loginForm.controls.email.touched) {
+        <div class="alert">Email is required.</div>
+        }
+         @if (loginForm.controls.email.hasError('email')&&loginForm.controls.email.touched) {
+            <div class="alert">Email is incorrect</div>
+         }
+</div>
+
+    <div> <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password">
+ @if (loginForm.controls.password.hasError('required')&&loginForm.controls.password.touched) {
+        <div class="alert">Password is required.</div>
+        }</div>
+    
+    <div> <label for="companySlug">CompanySlug</label>
+    <input id="companySlug" type="text" formControlName="companySlug">
+
+ @if (loginForm.controls.companySlug.hasError('required')&&loginForm.controls.companySlug.touched) {
+        <div class="alert">CompanySlug is required.</div>
+        }</div>
+
+    </div>
+    <div>
+        <button type="submit" [disabled]="!loginForm.valid||loading()">Submit</button>
+    </div>
+    <div class="alert">
+       
+        @if (errorMessage()) {
+        <p class="error">{{ errorMessage() }}</p>
+}
+
+    </div>
+
+</form></div>
