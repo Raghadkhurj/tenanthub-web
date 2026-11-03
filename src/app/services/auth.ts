@@ -23,8 +23,23 @@ logout(){
     return localStorage.removeItem('token');
 
 }
-isLoggedIn(){
- return this.getToken()!=null;
-  
+isLoggedIn() {
+  const token = this.getToken();
+  if (!token) {
+    return false;
+  }
+
+  try {
+    const middle = token.split('.')[1];
+    const payload = JSON.parse(atob(middle.replace(/-/g, '+').replace(/_/g, '/')));
+
+    if (payload.exp * 1000 < Date.now()) {
+      this.logout();
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
 }
 }
