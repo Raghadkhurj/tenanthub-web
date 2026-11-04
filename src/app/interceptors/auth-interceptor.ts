@@ -11,18 +11,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const token = auth.getToken();
 
   let request = req;
-if (token && req.url.startsWith(environment.apiUrl)) {
-      request = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+  if (token && req.url.startsWith(environment.apiUrl)) {
+    request = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
   }
 
   return next(request).pipe(
     catchError((err) => {
-      if (err.status ===401) {
-
-    auth.logout();
-    router.navigate(['/login']);        
+      if (err.status === 401 && req.url.startsWith(environment.apiUrl)) {
+        auth.logout();
+        router.navigate(['/login']);
       }
       return throwError(() => err);
-    })
+    }),
   );
 };

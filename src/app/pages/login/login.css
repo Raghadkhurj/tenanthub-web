@@ -6,7 +6,7 @@
   border: 1px solid #e5e7eb;
   border-radius: 10px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  font-family: system-ui, "Segoe UI", sans-serif;
+  font-family: system-ui, 'Segoe UI', sans-serif;
 }
 
 .login-card h2 {
@@ -47,4 +47,5 @@ input:focus {
 }
 
 button {
-  width: 100%;}
+  width: 100%;
+}
