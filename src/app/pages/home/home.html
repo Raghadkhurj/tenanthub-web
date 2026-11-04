@@ -1,0 +1,16 @@
+<div class="home-card">
+  <h2>Home</h2>
+
+  @if (loading()) {
+    <p>Loading...</p>
+  } @else if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  } @else if (user()) {
+    <p><strong>Email:</strong> {{ user()!.email }}</p>
+    <p><strong>Created:</strong> {{ user()!.createdDate | date: 'medium' }}</p>
+    <p><strong>Company:</strong> {{ user()!.tenant.name }}</p>
+    <p><strong>Slug:</strong> {{ user()!.tenant.slug }}</p>
+  }
+
+  <button (click)="logout()">Logout</button>
+</div>

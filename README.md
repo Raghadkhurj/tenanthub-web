@@ -1,59 +1,23 @@
-# TenanthubWeb
+# TenantHub Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.27.
+Angular frontend for the TenantHub API. A user logs in with email, password and company slug, and sees their profile and company.
 
-## Development server
+## Requirements
+- Node.js (LTS) and Angular CLI
+- The TenantHub API running (see the API README)
 
-To start a local development server, run:
+## How to run
+1. Start the API: in `tenanthub-api`, make sure `.env` has `FRONTEND_ORIGIN=http://localhost:4200`, then run `dotnet run` (runs on http://localhost:5053)
+2. In this folder, run `yarn install`
+3. Run `ng serve` and open http://localhost:4200
 
-```bash
-ng serve
-```
+The API URL is in `src/environments/`.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## How to test
+- Automated tests: `ng test`
+- Manual: create a user with the admin endpoints (see the API README), log in on `/login`, and you land on `/home` with your profile
+- Wrong password or company shows an error and stores no token
+- Opening `/home` without logging in redirects to `/login`
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Note about the token
+The token is saved in `localStorage`. This is simple, but if the page has an XSS bug, a malicious script could read the token. A safer option for real products is an HttpOnly cookie set by the server.
