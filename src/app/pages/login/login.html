@@ -1,7 +1,7 @@
 <div class="login-card">
   <h2>Login</h2>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="Field">
+    <div class="field">
       <div>
         <label for="email">Email</label>
         <input id="email" type="email" formControlName="email" />
@@ -9,7 +9,7 @@
           <div class="alert">Email is required.</div>
         }
         @if (loginForm.controls.email.hasError('email') && loginForm.controls.email.touched) {
-          <div class="alert">Email is incorrect</div>
+          <div class="alert">Please enter a valid email address, like name@example.com.</div>
         }
       </div>
 
@@ -24,24 +24,22 @@
       </div>
 
       <div>
-        <label for="companySlug">CompanySlug</label>
+        <label for="companySlug">Company</label>
         <input id="companySlug" type="text" formControlName="companySlug" />
 
         @if (
           loginForm.controls.companySlug.hasError('required') &&
           loginForm.controls.companySlug.touched
         ) {
-          <div class="alert">CompanySlug is required.</div>
+          <div class="alert">Company is required.</div>
         }
       </div>
     </div>
     <div>
       <button type="submit" [disabled]="!loginForm.valid || loading()">Submit</button>
     </div>
-    <div class="alert">
-      @if (errorMessage()) {
-        <p class="error">{{ errorMessage() }}</p>
-      }
-    </div>
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
   </form>
 </div>
