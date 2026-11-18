@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 })
 export class Auth {
   private httpClient = inject(HttpClient);
-
+  private readonly tokenKey = 'token';
   login(email: string, password: string, companySlug: string) {
     return this.httpClient
       .post<{ token: string }>(`${environment.apiUrl}/auth/user/login`, {
@@ -16,13 +16,13 @@ export class Auth {
         password: password,
         companySlug: companySlug,
       })
-      .pipe(tap((res) => localStorage.setItem('token', res.token)));
+      .pipe(tap((res) => localStorage.setItem(this.tokenKey, res.token)));
   }
   getToken() {
-    return localStorage.getItem('token');
+    return localStorage.getItem(this.tokenKey);
   }
   logout() {
-    return localStorage.removeItem('token');
+    localStorage.removeItem(this.tokenKey);
   }
   isLoggedIn() {
     const token = this.getToken();

@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
   styleUrl: './login.css',
 })
 export class Login {
-  private routerClient = inject(Router);
-  private authClient = inject(Auth);
+  private router = inject(Router);
+  private auth = inject(Auth);
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
@@ -29,10 +29,10 @@ export class Login {
 
     this.loading.set(true);
     this.errorMessage.set('');
-    this.authClient.login(email!, password!, companySlug!).subscribe({
+    this.auth.login(email!, password!, companySlug!).subscribe({
       next: () => {
         this.loading.set(false);
-        this.routerClient.navigate(['/home']);
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         this.loginForm.controls.password.reset();
