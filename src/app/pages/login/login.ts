@@ -1,0 +1,52 @@
+import { Component, inject, signal } from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Auth } from '../../services/auth';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-login',
+  imports: [ReactiveFormsModule],
+  templateUrl: './login.html',
+  styleUrl: './login.css',
+})
+export class Login {
+  private router = inject(Router);
+  private auth = inject(Auth);
+  loginForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+    companySlug: new FormControl('', [Validators.required]),
+  });
+  loading = signal(false);
+  errorMessage = signal('');
+  onSubmit() {
+    if (this.loginForm.invalid) {
+      this.loginForm.markAllAsTouched();
+      return;
+    }
+
+    const { email, companySlug, password } = this.loginForm.value;
+
+    this.loading.set(true);
+    this.errorMessage.set('');
+    this.auth.login(email!, password!, companySlug!).subscribe({
+      next: () => {
+        this.loading.set(false);
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        this.loginForm.controls.password.reset();
+        this.loading.set(false);
+        if (err.status === 401) {
+          this.errorMessage.set('Incorrect email, password or company.');
+        } else if (err.status === 0) {
+          this.errorMessage.set(
+            'Could not reach the server. Please check your connection and try again.',
+          );
+        } else {
+          this.errorMessage.set('Something went wrong. Please try again.');
+        }
+      },
+    });
+  }
+}
