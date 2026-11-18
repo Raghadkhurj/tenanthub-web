@@ -29,18 +29,22 @@ export class Login {
 
     this.loading.set(true);
     this.errorMessage.set('');
-
     this.authClient.login(email!, password!, companySlug!).subscribe({
       next: () => {
         this.loading.set(false);
         this.routerClient.navigate(['/home']);
       },
       error: (err) => {
+        this.loginForm.controls.password.reset();
         this.loading.set(false);
         if (err.status === 401) {
-          this.errorMessage.set('invalid email, password or company');
+          this.errorMessage.set('Incorrect email, password or company.');
+        } else if (err.status === 0) {
+          this.errorMessage.set(
+            'Could not reach the server. Please check your connection and try again.',
+          );
         } else {
-          this.errorMessage.set('could not reach the server ,try again');
+          this.errorMessage.set('Something went wrong. Please try again.');
         }
       },
     });
